@@ -1,5 +1,9 @@
-import { signOut } from '@/auth';
-import React, { ReactNode } from 'react';
+'use client'
+
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { useFormState } from 'react-dom';
+import { appDispatchContext } from '../context';
+import { doFetchStories, doSignOut } from '../lib/actions';
 import { Button } from '../ui/button';
 
 interface DashboardLayoutProps {
@@ -7,6 +11,27 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
+  const [state, dispathSignOut] = useFormState(doSignOut, undefined)
+  const [stories, dispatchFetchStories] = useFormState(doFetchStories, [])
+  const { dispatchChatSessionID } = useContext(appDispatchContext)
+  const [selectedItem, setSelectedItem] = useState<string>("")
+
+  useEffect(() => {
+    (async () => {
+      const email = localStorage.getItem('email')
+      if (email) {
+        const formData = new FormData()
+        formData.set("email", email)
+        dispatchFetchStories(formData)
+      }
+    })()
+  }, [])
+
+  const handleClickItem = (sessionID: string) => {
+    dispatchChatSessionID({ type: "replace", payload: sessionID })
+    setSelectedItem(sessionID)
+  }
+
   return (
     <div className="min-h-screen max-h-screen flex flex-col md:flex-row">
       <div className="w-full md:w-1/4 bg-white text-text-black">
@@ -16,41 +41,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           </h1>
           <div className='flex flex-col gap-4'>
             <div className=''>
-              <Button>New Story</Button>
+              <Button onClick={() => window.location.reload()}>New Story</Button>
             </div>
-            <div className='max-h-80 overflow-y-scroll'>
-              <h3 className='text-lg font-bold'>Stories</h3>
-              <div className='flex flex-col gap-1'>
-                <p className='p-2 rounded-md'>This is the story 1 This is...</p>
-                <p className='p-2 bg-gray-300 rounded-md'>This is the story 1 This is...</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-                <p className='p-2 rounded-md'>This is the story 1</p>
-              </div>
-            </div>
+            <StoriesList stories={stories} onClickItem={handleClickItem} selectedItem={selectedItem} />
           </div>
           <div className=''>
-            <form action={async () => {
-              'use server'
-              await signOut()
-            }}>
+            <form action={dispathSignOut}>
               <Button>Sign out</Button>
             </form>
           </div>
@@ -62,5 +58,25 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     </div>
   );
 };
+
+const StoriesList = ({ stories, onClickItem, selectedItem }: {
+  stories: string[],
+  onClickItem: (s: string) => void,
+  selectedItem?: string
+}) => {
+  const uniqueStories = Array.from(new Set(stories))
+
+  return (
+    <div className='max-h-80 overflow-y-scroll'>
+      <h3 className='text-lg font-bold'>Stories</h3>
+      <div className='flex flex-col gap-1 cursor-pointer'>
+        {uniqueStories?.length > 0 ? uniqueStories.map(s => (
+          <p onClick={() => onClickItem(s)} key={s}
+            className={`p-2 rounded-md ${selectedItem === s ? "bg-gray-300" : ""}`}>{s}</p>
+        )) : "No story found"}
+      </div>
+    </div>
+  )
+}
 
 export default DashboardLayout

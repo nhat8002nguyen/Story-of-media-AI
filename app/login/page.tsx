@@ -14,6 +14,11 @@ import { Button } from '../ui/button';
 export default function LoginPage() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined)
 
+  const handleAction = (formData: FormData) => {
+    localStorage.setItem("email", formData.get("email") as string)
+    dispatch(formData)
+  }
+
   return (
     <main className="App h-screen py-40 bg-gradient-to-r from-bg-blue-left to-bg-blue-right flex flex-col items-center px-8">
       <div className='flex flex-col items-left w-160'>
@@ -25,7 +30,7 @@ export default function LoginPage() {
             <p>Login to start tell a story about your media.</p>
           </div>
         </div>
-        <form className='flex flex-col gap-4' action={dispatch}>
+        <form className='flex flex-col gap-4' action={handleAction}>
           <div className="w-full">
             <div>
               <label

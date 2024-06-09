@@ -1,5 +1,3 @@
-import { Revenue } from './definitions';
-
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
@@ -19,20 +17,6 @@ export const formatDateToLocal = (
   };
   const formatter = new Intl.DateTimeFormat(locale, options);
   return formatter.format(date);
-};
-
-export const generateYAxis = (revenue: Revenue[]) => {
-  // Calculate what labels we need to display on the y-axis
-  // based on highest record and in 1000s
-  const yAxisLabels = [];
-  const highestRecord = Math.max(...revenue.map((month) => month.revenue));
-  const topLabel = Math.ceil(highestRecord / 1000) * 1000;
-
-  for (let i = topLabel; i >= 0; i -= 1000) {
-    yAxisLabels.push(`$${i / 1000}K`);
-  }
-
-  return { yAxisLabels, topLabel };
 };
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
@@ -66,4 +50,31 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     '...',
     totalPages,
   ];
+};
+
+export const isImageFile = (name: string) => {
+  return ['png', 'jpeg', 'jpg'].includes(
+    name.substring(name.lastIndexOf('.') + 1),
+  );
+};
+
+export const cleanAIText = (text: string) => {
+  return text.replace(/\*\*/g, '');
+};
+
+export const createFileFromStringBytes = (
+  byteString: string,
+  fileName: string,
+  mimeType: string,
+): File => {
+  const byteArray = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) {
+    byteArray[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([byteArray], { type: mimeType });
+
+  const file = new File([blob], fileName, { type: mimeType });
+
+  return file;
 };

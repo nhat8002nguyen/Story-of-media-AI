@@ -1,5 +1,6 @@
 import '@/app/ui/global.css';
 import { Metadata } from 'next';
+import { AppContextAllProvider } from './context';
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <AppContextAllProvider>
+          {children}
+        </AppContextAllProvider>
+      </body>
     </html>
   );
 }
