@@ -7,6 +7,7 @@ import { cleanAIText, isImageFile } from '@/app/lib/utils';
 import { Button } from '@/app/ui/button';
 import usePrevious from '@/hooks';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { v4 } from 'uuid';
@@ -142,12 +143,18 @@ export default function Page() {
               </>}
               {chatMessages.map(m => parseSocketMessage(m))}
             </div>
-            <form action={sendMessage} className='flex gap-4 items-end'>
-              <textarea value={inputMessage} onChange={handleChangeMessage} className='rounded-md w-full max-h-40' placeholder="Enter your message" />
-              <Button disabled={socketPending} className={`${socketPending ? "pointer-events-none opacity-50" : ""}`}>
-                Submit
-              </Button>
-            </form>
+            <div>
+              <form action={sendMessage} className='flex gap-4 items-end'>
+                <textarea value={inputMessage} onChange={handleChangeMessage} className='rounded-md w-full max-h-40' placeholder="Enter your message" />
+                <Button disabled={socketPending} className={`${socketPending ? "pointer-events-none opacity-50" : ""}`}>
+                  Submit
+                </Button>
+              </form>
+              <p className='text-tiny text-gray-500 text-center'>
+                Powered by story-of-media, Nhat’s Mindful AI, with <Link href={"https://deepmind.google/technologies/gemini/flash/"}>Gemini-1.5-flash
+                </Link>.
+              </p>
+            </div>
           </div>
         </div>}
     </main>

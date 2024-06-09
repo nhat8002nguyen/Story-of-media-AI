@@ -27,6 +27,7 @@ const config: Config = {
       },
       fontSize: {
         'big-title': '2.5rem',
+        tiny: '0.65rem',
       },
       boxShadow: {
         'primary-button': '1px 2px 2px rgba(0, 0, 0, 0.2)',

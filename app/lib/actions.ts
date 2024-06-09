@@ -85,5 +85,5 @@ export const doFetchStories = async (
   formData: FormData,
 ): Promise<string[]> => {
   const data = await external.fetchStories(formData.get('email') as string);
-  return data.stories;
+  return data ? data.stories : [];
 };
