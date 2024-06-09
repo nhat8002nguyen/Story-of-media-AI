@@ -93,8 +93,8 @@ export default function Page() {
       const messages: ChatMessage[] = JSON.parse(m)
 
       // if have state?.story, ignore the first 2 messages to avoid duplicates. 
-      return messages.slice(state?.story ? 2 : 0).map(m => (
-        <div className={`p-4 ${m.Role === "model" ? "bg-white" : "bg-gray-300"} rounded-lg`}>
+      return messages.slice(state?.story ? 2 : 0).map((m, i) => (
+        <div key={i} className={`p-4 ${m.Role === "model" ? "bg-white" : "bg-gray-300"} rounded-lg`}>
           {typeof m.Parts[0] === "string" ?
             <p style={{ whiteSpace: "pre-line" }}>
               {cleanAIText(m.Parts[0])}
@@ -151,7 +151,7 @@ export default function Page() {
                 </Button>
               </form>
               <p className='text-tiny text-gray-500 text-center'>
-                Powered by story-of-media, Nhat’s Mindful AI, with <Link href={"https://deepmind.google/technologies/gemini/flash/"}>Gemini-1.5-flash
+                Powered by story-of-media, Nhat&apos;s Mindful AI, with <Link href={"https://deepmind.google/technologies/gemini/flash/"}>Gemini-1.5-flash
                 </Link>.
               </p>
             </div>

@@ -73,7 +73,7 @@ export default function LoginPage() {
             </div>
             <LoginButton />
             <div className='pt-4'>
-              <p className='text-sm'>Don't have an account? <Link className='text-primary-color-r' href={"/register"}>Register</Link>
+              <p className='text-sm'>Don&apos;t have an account? <Link className='text-primary-color-r' href={"/register"}>Register</Link>
               </p>
             </div>
             <div
