@@ -9,7 +9,7 @@ import usePrevious from '@/hooks';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useContext, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { v4 } from 'uuid';
 
@@ -115,6 +115,19 @@ export default function Page() {
     }
   }
 
+  const handleTextareaKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      if (!e.shiftKey) {
+        sendMessage();
+      } else {
+        const textarea = e.target as HTMLTextAreaElement;
+        const cursorPosition = textarea.selectionStart;
+        textarea.selectionStart = cursorPosition + 1;
+        textarea.selectionEnd = cursorPosition + 1;
+      }
+    }
+  }
+
   return (
     <main className='h-full'>
       {(state == undefined || !state.story) && !chatSessionID
@@ -146,7 +159,7 @@ export default function Page() {
             </div>
             <div>
               <form action={sendMessage} className='flex gap-4 items-end'>
-                <textarea value={inputMessage} onChange={handleChangeMessage} className='rounded-md w-full max-h-40' placeholder="Enter your message" />
+                <textarea onKeyDown={handleTextareaKeydown} value={inputMessage} onChange={handleChangeMessage} className='rounded-md w-full max-h-40' placeholder="Enter your message" />
                 <Button disabled={socketPending} className={`${socketPending ? "pointer-events-none opacity-50" : ""}`}>
                   Submit
                 </Button>
