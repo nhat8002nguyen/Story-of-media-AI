@@ -7,6 +7,7 @@ import { cleanAIText, isImageFile } from '@/app/lib/utils';
 import { Button } from '@/app/ui/button';
 import usePrevious from '@/hooks';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
@@ -99,7 +100,7 @@ export default function Page() {
             <p style={{ whiteSpace: "pre-line" }}>
               {cleanAIText(m.Parts[0])}
             </p> : m.Parts[0].MIMEType.includes('image')
-              ? <img src={getImgSrc(m.Parts[0].Data, m.Parts[0].MIMEType)} alt='Image' />
+              ? <Image src={getImgSrc(m.Parts[0].Data, m.Parts[0].MIMEType)} alt='Image' />
               : <p>Original file</p>}
         </div>
       ))
@@ -131,7 +132,7 @@ export default function Page() {
               {state?.story && <>
                 {formFile && <div className={`p-4 bg-gray-300 rounded-lg`}>
                   {isImageFile(formFile.name)
-                    ? <img src={URL.createObjectURL(formFile)} alt='input file' />
+                    ? <Image src={URL.createObjectURL(formFile)} alt='input file' />
                     : <p>File: {formFile.name}</p>
                   }
                 </div>}
