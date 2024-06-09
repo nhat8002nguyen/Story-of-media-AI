@@ -12,7 +12,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [state, dispathSignOut] = useFormState(doSignOut, undefined)
-  const [stories, dispatchFetchStories] = useFormState(doFetchStories, [])
+  const [stories, dispatchFetchStories] = useFormState(doFetchStories, null)
   const { dispatchChatSessionID } = useContext(appDispatchContext)
   const [selectedItem, setSelectedItem] = useState<string>("")
 
@@ -60,7 +60,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 };
 
 const StoriesList = ({ stories, onClickItem, selectedItem }: {
-  stories: string[],
+  stories: string[] | null,
   onClickItem: (s: string) => void,
   selectedItem?: string
 }) => {
@@ -70,7 +70,7 @@ const StoriesList = ({ stories, onClickItem, selectedItem }: {
     <div className='max-h-80 overflow-y-scroll'>
       <h3 className='text-lg font-bold'>Stories</h3>
       <div className='flex flex-col gap-1 cursor-pointer'>
-        {uniqueStories?.length > 0 ? uniqueStories.map(s => (
+        {stories === null ? "Loading..." : uniqueStories.length > 0 ? uniqueStories.map(s => (
           <p onClick={() => onClickItem(s)} key={s}
             className={`p-2 rounded-md ${selectedItem === s ? "bg-gray-300" : ""}`}>{s}</p>
         )) : "No story found"}

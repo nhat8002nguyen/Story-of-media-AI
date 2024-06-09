@@ -81,9 +81,9 @@ export const uploadMedia = async (
 };
 
 export const doFetchStories = async (
-  prevState: string[],
+  prevState: string[] | null,
   formData: FormData,
-): Promise<string[]> => {
+): Promise<string[] | null> => {
   const data = await external.fetchStories(formData.get('email') as string);
-  return data ? data.stories : [];
+  return data ? data.stories : null;
 };
