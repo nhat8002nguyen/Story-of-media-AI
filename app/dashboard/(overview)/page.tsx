@@ -134,7 +134,9 @@ export default function Page() {
         ? <form className='flex flex-col items-center gap-4' action={handleAction}>
           <div onClick={() => handleClickFileArea()} className='flex flex-col mt-16 justify-center items-center p-8 border rounded-lg bg-white cursor-pointer shadow-primary-button'>
             <input accept=".jpg,.jpeg,.png,.pdf,.txt" type='file' id='mediaInput' name='mediaInput' hidden onChange={handleChangeFile} />
-            <ClipboardDocumentListIcon className='w-32 h-32' />
+            {formFile && isImageFile(formFile.name)
+              ? <Image width={200} height={200} src={URL.createObjectURL(formFile)} alt={formFile.name} />
+              : <ClipboardDocumentListIcon className='w-32 h-32' />}
             <p>{formFile ? formFile.name : "Upload a media file to generate a story"}</p>
           </div>
           <Button>Submit</Button>
