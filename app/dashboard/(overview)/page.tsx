@@ -36,7 +36,7 @@ export default function Page() {
       dispatch(data)
     }
     const newSocket = new WebSocket(
-      `ws://${process.env.NEXT_PUBLIC_STORY_ORIGIN}/api/story/ws?user_id=${localStorage.getItem('email')}&session_id=${chatSessionID}`
+      `${process.env.NEXT_PUBLIC_STORY_WEB_SOCKET_BASE}/api/story/ws?user_id=${localStorage.getItem('email')}&session_id=${chatSessionID}`
     );
     setSocket(newSocket);
 
