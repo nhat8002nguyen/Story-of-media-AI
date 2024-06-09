@@ -100,7 +100,7 @@ export default function Page() {
             <p style={{ whiteSpace: "pre-line" }}>
               {cleanAIText(m.Parts[0])}
             </p> : m.Parts[0].MIMEType.includes('image')
-              ? <Image src={getImgSrc(m.Parts[0].Data, m.Parts[0].MIMEType)} alt='Image' />
+              ? <Image width={700} height={700} src={getImgSrc(m.Parts[0].Data, m.Parts[0].MIMEType)} alt='Image' />
               : <p>Original file</p>}
         </div>
       ))
@@ -132,7 +132,7 @@ export default function Page() {
               {state?.story && <>
                 {formFile && <div className={`p-4 bg-gray-300 rounded-lg`}>
                   {isImageFile(formFile.name)
-                    ? <Image src={URL.createObjectURL(formFile)} alt='input file' />
+                    ? <Image width={700} height={700} src={URL.createObjectURL(formFile)} alt='input file' />
                     : <p>File: {formFile.name}</p>
                   }
                 </div>}
@@ -151,7 +151,7 @@ export default function Page() {
                   Submit
                 </Button>
               </form>
-              <p className='text-tiny text-gray-500 text-center'>
+              <p className='text-tiny text-gray-700 text-center'>
                 Powered by story-of-media, Nhat&apos;s Mindful AI, with <Link href={"https://deepmind.google/technologies/gemini/flash/"}>Gemini-1.5-flash
                 </Link>.
               </p>
